@@ -1,0 +1,28 @@
+name: Bootstrap coral kernel from Evolution X
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/bootstrap-evox.yml
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Evolution X floral 4.14 kernel
+        run: |
+          set -euo pipefail
+          git clone --depth 1 --branch main https://github.com/its-hecker/evox-coral-kernel.git "$RUNNER_TEMP/source"
+          git -C "$RUNNER_TEMP/source" ls-files --stage KernelSU
+      - name: Publish isolated Android 17 staging branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/source"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/its-hecker/axion-cnb-coral-kernel.git" HEAD:refs/heads/cnb-android17-prep
