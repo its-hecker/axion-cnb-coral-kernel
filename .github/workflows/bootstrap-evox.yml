@@ -25,4 +25,9 @@ jobs:
         run: |
           set -euo pipefail
           cd "$RUNNER_TEMP/source"
+          git config user.name "Hecker"
+          git config user.email "118846180+its-hecker@users.noreply.github.com"
+          git checkout --orphan cnb-android17-prep
+          git add -A
+          git commit -m "Import Evolution X floral kernel snapshot for AxionOS"
           git push "https://x-access-token:${GH_TOKEN}@github.com/its-hecker/axion-cnb-coral-kernel.git" HEAD:refs/heads/cnb-android17-prep
